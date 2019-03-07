@@ -8,7 +8,7 @@ class Overview(models.Model):
     class Meta:
         verbose_name_plural = "Overview"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.text[0:40] + '...'
 
 
@@ -30,7 +30,7 @@ class PersonalInfo(models.Model):
     def full_name(self):
         return " ".join([self.first_name, self.last_name])
 
-    def __unicode__(self):
+    def __str__(self):
         return self.full_name()
 
 
@@ -68,7 +68,7 @@ class Education(models.Model):
         else:
             return self.completion_date.strftime("%b %Y")
 
-    def __unicode__(self):
+    def __str__(self):
         return ' '.join([self.name, self.edu_date_range()])
 
 
@@ -111,7 +111,7 @@ class Job(models.Model):
         else:
             return self.completion_date.strftime("%b %Y")
 
-    def __unicode__(self):
+    def __str__(self):
         return ' '.join([self.company, self.job_date_range()])
 
 
@@ -126,14 +126,14 @@ class Accomplishment(models.Model):
         db_table = 'accomplishments'
         ordering = ['order']
 
-    def __unicode__(self):
+    def __str__(self):
         return ''.join([self.job.company, '-', self.description[0:50], '...'])
 
 
 class Skillset(models.Model):
     name = models.CharField(max_length=250)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -145,5 +145,5 @@ class Skill(models.Model):
     class Meta:
         ordering = ['id']
 
-    def __unicode__(self):
+    def __str__(self):
         return ''.join([self.skillset.name, '-', self.name])
