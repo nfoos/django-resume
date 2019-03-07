@@ -1,30 +1,38 @@
-from django.db import models 
+from django.db import models
 import time
+
 
 class Overview(models.Model):
     text = models.TextField()
+
     class Meta:
         verbose_name_plural = "Overview"
+
     def __unicode__(self):
         return self.text[0:40] + '...'
+
 
 class PersonalInfo(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    locality = models.CharField(max_length=255, help_text="e.g. city such as Boston")
-    region = models.CharField(max_length=255, help_text="e.g. state such as Massachusetts")
-    region_shorthand = models.CharField(max_length=64, help_text="e.g. shorthand (abbr), MA for Massachusetts")
+    locality = models.CharField(
+        max_length=255, help_text="e.g. city such as Boston")
+    region = models.CharField(
+        max_length=255, help_text="e.g. state such as Massachusetts")
+    region_shorthand = models.CharField(
+        max_length=64, help_text="e.g. shorthand (abbr), MA for Massachusetts")
     email = models.EmailField()
     linkedin = models.URLField(blank=True)
-    
+
     class Meta:
         verbose_name_plural = "Personal Info"
-    
+
     def full_name(self):
         return " ".join([self.first_name, self.last_name])
-    
+
     def __unicode__(self):
         return self.full_name()
+
 
 class Education(models.Model):
     name = models.CharField(max_length=250)
@@ -39,8 +47,8 @@ class Education(models.Model):
         verbose_name_plural = "Education"
 
     def edu_date_range(self):
-        return ''.join(['(', self.formatted_start_date(), 
-            '-', self.formatted_end_date(), ')'])
+        return ''.join(['(', self.formatted_start_date(),
+                        '-', self.formatted_end_date(), ')'])
 
     def full_start_date(self):
         return self.start_date.strftime("%Y-%m-%d")
@@ -74,17 +82,17 @@ class Job(models.Model):
     completion_date = models.DateField()
     is_current = models.BooleanField(default=False)
     is_public = models.BooleanField(default=True)
-    company_image = models.CharField(max_length=250, blank=True, 
-        help_text='path to company image, local or otherwise')
+    company_image = models.CharField(max_length=250, blank=True,
+                                     help_text='path to company image, local or otherwise')
 
     class Meta:
         db_table = 'jobs'
-        ordering = ['-completion_date','-start_date']
-        
+        ordering = ['-completion_date', '-start_date']
+
     def job_date_range(self):
-        return ''.join(['(', self.formatted_start_date(),'-', 
-            self.formatted_end_date(), ')'])
-    
+        return ''.join(['(', self.formatted_start_date(), '-',
+                        self.formatted_end_date(), ')'])
+
     def full_start_date(self):
         return self.start_date.strftime("%Y-%m-%d")
 
@@ -95,8 +103,8 @@ class Job(models.Model):
             return self.completion_date.strftime("%Y-%m-%d")
 
     def formatted_start_date(self):
-            return self.start_date.strftime("%b %Y")
-        
+        return self.start_date.strftime("%b %Y")
+
     def formatted_end_date(self):
         if (self.is_current == True):
             return "Current"
@@ -106,11 +114,11 @@ class Job(models.Model):
     def __unicode__(self):
         return ' '.join([self.company, self.job_date_range()])
 
+
 class Accomplishment(models.Model):
     description = models.TextField()
     #job = models.ForeignKey(Job)
-    job = models.ForeignKey('Job',on_delete=models.CASCADE)
-    
+    job = models.ForeignKey('Job', on_delete=models.CASCADE)
 
     order = models.IntegerField()
 
@@ -121,17 +129,19 @@ class Accomplishment(models.Model):
     def __unicode__(self):
         return ''.join([self.job.company, '-', self.description[0:50], '...'])
 
+
 class Skillset(models.Model):
     name = models.CharField(max_length=250)
 
     def __unicode__(self):
         return self.name
 
+
 class Skill(models.Model):
-    name =  models.CharField(max_length=250)
+    name = models.CharField(max_length=250)
     skill_url = models.URLField('Skill URL', blank=True)
-    skillset = models.ForeignKey('Skillset',on_delete=models.CASCADE)
-    
+    skillset = models.ForeignKey('Skillset', on_delete=models.CASCADE)
+
     class Meta:
         ordering = ['id']
 
