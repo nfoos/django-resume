@@ -1,7 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 from django.contrib.sites.requests import RequestSite
-from django.template import RequestContext
+from django.shortcuts import render
 
 from .models import Overview, PersonalInfo, Education, Job, Accomplishment, Skillset, Skill
 
