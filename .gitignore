@@ -4,6 +4,7 @@
 *.egg
 *.EGG
 *.EGG-INFO
+*.sqlite3
 bin
 build
 develop-eggs
